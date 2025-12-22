@@ -1,0 +1,67 @@
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-Regular.otf);
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-It.otf);
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-Semibold.otf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-SemiboldIt.otf);
+    font-style: italic;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-Bold.otf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-BoldIt.otf);
+    font-style: italic;
+    font-weight: bold;
+}
+
+/* Globals */
+body {
+    font-family: "Source Sans Pro";
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #222;
+        color: #DDD;
+    }
+}
+
+/* Images */
+.imgbox {
+    text-align: center;
+}
+
+.imgbox>img {
+    max-width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+    .imgbox.white>img {
+        filter: invert(0.867);
+    }
+
+    .imgbox.white-preservecolors>img {
+        filter: invert(0.867) hue-rotate(180deg);
+    }
+}

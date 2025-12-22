@@ -1,0 +1,17 @@
+---
+layout: default
+---
+
+{%- assign today_timestamp = site.time | date: "%s" -%}
+
+<div>
+<p><span class="keyname">Blog Posts:</span></p>
+<ul>
+{% for post in site.posts %}
+{%- assign post_timestamp = post.date | date: "%s" -%}
+{% if post_timestamp <= today_timestamp %}
+<li><a href="{{ post.url }}">{{ post.title }}</a> <span class="blog-pre">&mdash; {{ post.date | date: "%-d %B %Y" }}</span></li>
+{% endif %}
+{% endfor %}
+</ul>
+</div>
