@@ -1,0 +1,30 @@
+---
+layout: default
+---
+
+<a id="top"></a>
+<div class="post">
+    <div class="topbar"><a
+            href="/"><span>S</span><span>E</span><span>M</span><span>A</span><span>N</span><span>T</span><span>I</span><span>C</span><span>S</span></a>
+        <div class="bottomborder"></div>
+    </div>
+    <div class="contentbar">
+        <aside>
+            <div class="sidebar">
+                <div class="sidebar-item sidebar-activable"><a href="/">Home</a></div>
+                <div class="sidebar-item sidebar-activable"><a href="/about">About</a></div>
+                <div>&nbsp;</div>
+                <div class="toc sidebar-item">
+                    <div class="sidebar-activable"><a href="#top">{{ page.title }}</a></div>
+                    {% include toc.html html=content item_class='toc-level-%level%' %}
+                </div>
+            </div>
+        </aside>
+        <article>
+            <h1>{{ page.title }}</h1>
+            {% if page.subtitle %}<p class="subtitle">{{ page.subtitle }}</p>{% endif %}
+            <p class="date">{{ page.date | date: "%-d %B %Y" }}</p>
+            {{ content }}
+        </article>
+    </div>
+</div>

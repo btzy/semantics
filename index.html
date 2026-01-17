@@ -4,14 +4,37 @@ layout: default
 
 {%- assign today_timestamp = site.time | date: "%s" -%}
 
+<a id="top"></a>
+<div class="homepage">
+    <div class="topbar">
+        <span><span>S</span><span>E</span><span>M</span><span>A</span><span>N</span><span>T</span><span>I</span><span>C</span><span>S</span></span>
+    </div>
+    <div class="subbar">
+        <div class="subtitle">Bernard Teo's blog about software engineering in C++</div>
+        <div class="links"><a href="/about">About</a></div>
+    </div>
+    <div class="contentbar">
+        <ul>
+            {% for post in site.posts %}
+            <li><a href="{{ post.url }}">
+                    <p class="title">{{ post.title }}</p>
+                    <p class="subtitle">{{ post.subtitle }}</p>
+                    <p class="date">{{ post.date | date: "%-d %B %Y" }}</p>
+                </a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 <div>
-<p><span class="keyname">Blog Posts:</span></p>
-<ul>
-{% for post in site.posts %}
-{%- assign post_timestamp = post.date | date: "%s" -%}
-{% if post_timestamp <= today_timestamp %}
-<li><a href="{{ post.url }}">{{ post.title }}</a> <span class="blog-pre">&mdash; {{ post.date | date: "%-d %B %Y" }}</span></li>
-{% endif %}
-{% endfor %}
-</ul>
+    <ul>
+        {% for post in site.posts %}
+        {%- assign post_timestamp = post.date | date: "%s" -%}
+        {% if post_timestamp <= today_timestamp %} <li><a href="{{ post.url }}">
+                <p class="title">{{ post.title }}</p>
+                <p class="subtitle">{{ post.subtitle }}</p>
+                <p class="date">{{ post.date | date: "%-d %B %Y" }}</p>
+            </a></li>
+            {% endif %}
+            {% endfor %}
+    </ul>
 </div>

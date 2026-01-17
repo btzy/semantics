@@ -1,12 +1,27 @@
 @font-face {
     font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-Light.otf);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-LightIt.otf);
+    font-style: italic;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
     src: url(fonts/SourceSansPro-Regular.otf);
+    font-weight: 400;
 }
 
 @font-face {
     font-family: "Source Sans Pro";
     src: url(fonts/SourceSansPro-It.otf);
     font-style: italic;
+    font-weight: 400;
 }
 
 @font-face {
@@ -25,26 +40,707 @@
 @font-face {
     font-family: "Source Sans Pro";
     src: url(fonts/SourceSansPro-Bold.otf);
-    font-weight: bold;
+    font-weight: 700;
 }
 
 @font-face {
     font-family: "Source Sans Pro";
     src: url(fonts/SourceSansPro-BoldIt.otf);
     font-style: italic;
-    font-weight: bold;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "Vantage";
+    src: url(fonts/vantage.ttf);
+    font-weight: normal;
 }
 
 /* Globals */
+html {
+    scroll-behavior: smooth;
+    /* Smooth scrolling for sidebar links */
+}
+
 body {
-    font-family: "Source Sans Pro";
+    margin: 0;
+    background-color: #FFF;
+    color: #000;
+}
+
+pre {
+    letter-spacing: normal;
 }
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #222;
+        background-color: #222228;
         color: #DDD;
     }
+}
+
+/* .homepage = the home page only */
+/* .post = applies to posts and the about page */
+
+/* The entire box, including the header */
+.homepage,
+.post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: clip;
+}
+
+/* The top bar */
+.homepage .topbar,
+.post .topbar {
+    white-space: nowrap;
+    font-family: "Vantage";
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.homepage .topbar {
+    font-size: 80px;
+}
+
+.post .topbar {
+    font-size: 40px;
+}
+
+.homepage .topbar>span,
+.post .topbar>a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    flex: 0 0 auto;
+    user-select: none;
+}
+
+.homepage .topbar>span>span:nth-child(1),
+.post .topbar>a>span:nth-child(1) {
+    color: #009;
+}
+
+.homepage .topbar>span>span:nth-child(2),
+.post .topbar>a>span:nth-child(2) {
+    color: #900;
+}
+
+.homepage .topbar>span>span:nth-child(3),
+.post .topbar>a>span:nth-child(3) {
+    color: #090;
+}
+
+.homepage .topbar>span>span:nth-child(4),
+.post .topbar>a>span:nth-child(4) {
+    color: #909;
+}
+
+.homepage .topbar>span>span:nth-child(5),
+.post .topbar>a>span:nth-child(5) {
+    color: #990;
+}
+
+.homepage .topbar>span>span:nth-child(6),
+.post .topbar>a>span:nth-child(6) {
+    color: #099;
+}
+
+.homepage .topbar>span>span:nth-child(7),
+.post .topbar>a>span:nth-child(7) {
+    color: #900;
+}
+
+.homepage .topbar>span>span:nth-child(8),
+.post .topbar>a>span:nth-child(8) {
+    color: #090;
+}
+
+.homepage .topbar>span>span:nth-child(9),
+.post .topbar>a>span:nth-child(9) {
+    color: #009;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    .homepage .topbar>span>span:nth-child(1),
+    .homepage .topbar>span>span:nth-child(2),
+    .homepage .topbar>span>span:nth-child(3),
+    .homepage .topbar>span>span:nth-child(4),
+    .homepage .topbar>span>span:nth-child(5),
+    .homepage .topbar>span>span:nth-child(6),
+    .homepage .topbar>span>span:nth-child(7),
+    .homepage .topbar>span>span:nth-child(8),
+    .homepage .topbar>span>span:nth-child(9),
+    .post .topbar>a>span:nth-child(1),
+    .post .topbar>a>span:nth-child(2),
+    .post .topbar>a>span:nth-child(3),
+    .post .topbar>a>span:nth-child(4),
+    .post .topbar>a>span:nth-child(5),
+    .post .topbar>a>span:nth-child(6),
+    .post .topbar>a>span:nth-child(7),
+    .post .topbar>a>span:nth-child(8),
+    .post .topbar>a>span:nth-child(9) {
+        color: inherit;
+    }
+}
+
+.homepage .topbar>span {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding: 10px 40px;
+    border-image: linear-gradient(to right, transparent, #BBB 40px, #BBB calc(100% - 40px), transparent) 1;
+    cursor: default;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    .homepage .topbar>span {
+        border-image: linear-gradient(to right, transparent, #444 40px, #444 calc(100% - 40px), transparent) 1;
+    }
+}
+
+/* The animation stuff when hovering over the top bar link in posts */
+.post .topbar>a {
+    padding: 5px 20px;
+}
+
+.post .topbar>.bottomborder {
+    height: 1px;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+    mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+    transition: background-position 0.3s linear;
+    /* border-image: linear-gradient(to right, transparent, #BBB 20px, #BBB calc(100% - 20px), transparent) 1; */
+}
+
+.post .topbar>.bottomborder::before,
+.post .topbar>.bottomborder::after {
+    content: "";
+    flex: 1 0 auto;
+    background-size: 300% 100%;
+    transition: background-position 0.3s linear;
+}
+
+.post .topbar>.bottomborder::before {
+    background-position: 0% 0%;
+    background-image: linear-gradient(to right, #BBB, #BBB, #000, #000);
+}
+
+.post .topbar>.bottomborder::after {
+    background-position: 100% 0%;
+    background-image: linear-gradient(to left, #BBB, #BBB, #000, #000);
+}
+
+.post .topbar:has(>a:hover)>.bottomborder::before {
+    background-position: 100% 0%;
+}
+
+.post .topbar:has(>a:hover)>.bottomborder::after {
+    background-position: 0% 0%;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    .post .topbar>.bottomborder::before {
+        background-image: linear-gradient(to right, #444, #444, #ffaa88, #ffaa88);
+    }
+
+    .post .topbar>.bottomborder::after {
+        background-image: linear-gradient(to left, #444, #444, #ffaa88, #ffaa88);
+    }
+}
+
+/* The sub bar for the homepage */
+.homepage .subbar {
+    width: 100%;
+    max-width: 800px;
+    font-family: "Source Sans Pro";
+    font-weight: 300;
+    font-size: small;
+    letter-spacing: 0.04em;
+    margin: 14px 0;
+    display: flex;
+    flex-direction: column;
+    color: #777;
+}
+
+@media (prefers-color-scheme: dark) {
+    .homepage .subbar {
+        color: #888;
+    }
+}
+
+.homepage .subbar>.subtitle,
+.homepage .subbar>.links {
+    flex: 0 0 auto;
+    text-align: center;
+    margin: 4px 0;
+}
+
+.homepage .subbar>.links>a {
+    color: #003399;
+    text-decoration: none;
+}
+
+.homepage .subbar>.links>a:hover {
+    font-weight: 600;
+    color: #990000;
+}
+
+@media (prefers-color-scheme: dark) {
+    .homepage .subbar>.links>a {
+        color: #88aaff;
+    }
+
+    .homepage .subbar>.links>a:hover {
+        color: #ffaa88;
+    }
+}
+
+/* The content area for the homepage */
+.homepage .contentbar {
+    width: 100%;
+    max-width: 800px;
+    font-family: "Source Sans Pro";
+    font-weight: 300;
+    letter-spacing: 0.04em;
+}
+
+.homepage .contentbar ul {
+    list-style-type: none;
+    margin: 20px 0;
+    padding: 0;
+    display: block;
+}
+
+.homepage .contentbar ul li {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.homepage .contentbar ul li a {
+    display: block;
+    margin: 10px 0;
+    padding: 14px 20px;
+    color: inherit;
+    text-decoration: none;
+    background-size: 300% 100%;
+    background-position: 100% 0%;
+    background-image: linear-gradient(to left, #FFF, #FFF, #DDD, #DDD);
+    transition: background-position 0.3s linear;
+}
+
+.homepage .contentbar ul li a:hover {
+    background-position: 0% 0%;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    .homepage .contentbar ul li a {
+        background-image: linear-gradient(to left, #222228, #222228, #348, #348);
+    }
+}
+
+.homepage .contentbar ul li a p {
+    margin: 0;
+}
+
+.homepage .contentbar ul li a p.title {
+    font-weight: bold;
+    font-size: x-large;
+    margin-bottom: 4px;
+}
+
+.homepage .contentbar ul li a p.date {
+    color: #777;
+    font-size: small;
+    margin-top: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .homepage .contentbar ul li a p.date {
+        color: #888;
+    }
+}
+
+/* The content area for posts including the sidebar but not the top bar */
+.post .contentbar {
+    width: 100%;
+    max-width: 1300px;
+    font-family: "Source Sans Pro";
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+    justify-content: center;
+}
+
+/* The sidebar */
+.post .contentbar aside {
+    width: 25%;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    overflow-x: clip;
+    /* No sidebar for small screens */
+    display: none;
+    color: #555;
+}
+
+@media (prefers-color-scheme: dark) {
+    .post .contentbar aside {
+        color: #AAA;
+    }
+}
+
+@media only screen and (min-width: 850px) {
+
+    /* Sidebar for large screens */
+    .post .contentbar aside {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/*
+border-left-color shenanigans
+To make transitions work properly, we set the default border-left-color
+on the sidebar container, and make everything else inherit from it.
+If the border-left-color is changed due to :target-current or :hover,
+the border-left-color is inherited by all child elements automatically.
+*/
+
+.post .contentbar aside>.sidebar {
+    flex: 1 0 auto;
+    padding: 1px 20px;
+    /* 1px to prevent padding collapsing into child margins */
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #BBB;
+}
+
+.post .contentbar aside::before {
+    flex: 0 0 auto;
+    display: block;
+    content: " ";
+    height: 20px;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: transparent;
+    border-image: linear-gradient(to top, #BBB, transparent) 1;
+}
+
+.post .contentbar aside::after {
+    flex: 0 1 auto;
+    display: block;
+    content: " ";
+    height: 20px;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: transparent;
+    border-image: linear-gradient(to bottom, #BBB, transparent) 1;
+}
+
+@media (prefers-color-scheme: dark) {
+    .post .contentbar aside>.sidebar {
+        border-left-color: #444;
+    }
+
+    .post .contentbar aside::before {
+        border-image: linear-gradient(to top, #444, transparent) 1;
+    }
+
+    .post .contentbar aside::after {
+        border-image: linear-gradient(to bottom, #444, transparent) 1;
+    }
+}
+
+.post .contentbar aside .sidebar-item {
+    margin: 10px 0;
+    padding: 0;
+    font-size: large;
+    border-left-color: inherit;
+}
+
+/* The sidebar table of contents */
+.post .contentbar aside .toc {
+    scroll-target-group: auto;
+    position: sticky;
+    top: 30px;
+}
+
+/* Sidebar table of contents list styles */
+.post .contentbar aside ul {
+    margin: 0;
+    padding: 0;
+    font-size: initial;
+    border-left-color: inherit;
+}
+
+.post .contentbar aside li {
+    list-style-type: none;
+    margin: 6px 0;
+    position: relative;
+    border-left-color: inherit;
+}
+
+.post .contentbar aside .sidebar-activable {
+    position: relative;
+    border-left-color: inherit;
+}
+
+/* Individual links in the sidebar */
+.post .contentbar aside a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    position: relative;
+}
+
+.post .contentbar aside a:target-current {
+    font-weight: 600;
+    color: #003399;
+}
+
+.post .contentbar aside a:hover {
+    font-weight: 600;
+    color: #990000;
+}
+
+.post .contentbar aside a::before {
+    position: absolute;
+    display: block;
+    left: -31px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    content: "";
+    clip-path: polygon(0px 0px, 8px 0px, 8px 10px, 8px 20px, 0px 20px);
+    background-color: #BBB;
+    transition: clip-path 0.3s ease, background-color 0.3s linear;
+}
+
+.post .contentbar aside a:target-current::before,
+.post .contentbar aside a:hover::before {
+    clip-path: polygon(0px 0px, 10px 0px, 20px 10px, 10px 20px, 0px 20px);
+}
+
+.post .contentbar aside a:target-current::before {
+    background-color: #003399;
+}
+
+.post .contentbar aside a:hover::before {
+    background-color: #990000;
+}
+
+.post .contentbar aside a::after {
+    position: absolute;
+    display: block;
+    left: -31px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    content: "";
+    clip-path: polygon(0px 0px, 6px 0px, 6px 10px, 6px 20px, 0px 20px);
+    background-color: #FFF;
+    transition: clip-path 0.3s ease;
+}
+
+.post .contentbar aside a:target-current::after,
+.post .contentbar aside a:hover::after {
+    clip-path: polygon(0px 0px, 8px 0px, 18px 10px, 8px 20px, 0px 20px);
+}
+
+.post .contentbar aside li,
+.post .contentbar aside .sidebar-activable {
+    border-left-color: inherit;
+}
+
+.post .contentbar aside li::before,
+.post .contentbar aside .sidebar-activable::before {
+    position: absolute;
+    display: block;
+    left: -23px;
+    top: 0;
+    height: 100%;
+    content: "";
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: inherit;
+    opacity: 0;
+    transition: border-left-color 0.3s linear, left 0s 0.3s;
+}
+
+.post .contentbar aside li:has(>a:target-current),
+.post .contentbar aside .sidebar-activable:has(>a:target-current) {
+    border-left-color: #003399;
+}
+
+.post .contentbar aside li:has(>a:target-current)::before,
+.post .contentbar aside .sidebar-activable:has(>a:target-current)::before {
+    left: -21px;
+    opacity: 1;
+    transition: border-left-color 0.3s linear, left 0s 0s;
+}
+
+.post .contentbar aside li:has(>a:hover),
+.post .contentbar aside .sidebar-activable:has(>a:hover) {
+    border-left-color: #990000;
+}
+
+.post .contentbar aside li:has(>a:hover)::before,
+.post .contentbar aside .sidebar-activable:has(>a:hover)::before {
+    left: -21px;
+    opacity: 1;
+    transition: border-left-color 0.3s linear, left 0s 0s;
+}
+
+@media (prefers-color-scheme: dark) {
+    .post .contentbar aside a:target-current {
+        color: #88aaff;
+    }
+
+    .post .contentbar aside a:hover {
+        color: #ffaa88;
+    }
+
+    .post .contentbar aside a::before {
+        background-color: #444;
+    }
+
+    .post .contentbar aside a:target-current::before {
+        background-color: #88aaff;
+    }
+
+    .post .contentbar aside a:hover::before {
+        background-color: #ffaa88;
+    }
+
+    .post .contentbar aside a::after {
+        background-color: #222228;
+    }
+
+    .post .contentbar aside li:has(>a:target-current),
+    .post .contentbar aside .sidebar-activable:has(>a:target-current) {
+        border-left-color: #88aaff;
+    }
+
+    .post .contentbar aside li:has(>a:hover),
+    .post .contentbar aside .sidebar-activable:has(>a:hover) {
+        border-left-color: #ffaa88;
+    }
+}
+
+/* Indentation for the list items */
+.post .contentbar aside li.toc-level-2 a {
+    padding-inline-start: 10px;
+}
+
+.post .contentbar aside li.toc-level-3 a {
+    padding-inline-start: 20px;
+}
+
+.post .contentbar aside li.toc-level-4 a {
+    padding-inline-start: 30px;
+}
+
+.post .contentbar aside li.toc-level-5 a {
+    padding-inline-start: 40px;
+}
+
+.post .contentbar aside li.toc-level-6 a {
+    padding-inline-start: 50px;
+}
+
+/* The main content */
+.post .contentbar article {
+    /* Take full width (no sidebar) on small screens */
+    width: 100%;
+    flex: 0 0 auto;
+    line-height: 1.6;
+    box-sizing: border-box;
+    padding: 0 30px;
+}
+
+@media only screen and (min-width: 850px) {
+
+    /* Take 75%, which leaves 25% for sidebar on large screens */
+    .post .contentbar article {
+        width: 75%;
+    }
+}
+
+/* Links in the main content */
+.post .contentbar article a {
+    color: #003399;
+}
+
+.post .contentbar article a:hover {
+    color: #990000;
+}
+
+@media (prefers-color-scheme: dark) {
+    .post .contentbar article a {
+        color: #88aaff;
+    }
+
+    .post .contentbar article a:hover {
+        color: #ffaa88;
+    }
+}
+
+/* The post title */
+.post .contentbar article h1 {
+    margin-bottom: 0;
+}
+
+/* The post subtitle */
+.post .contentbar article p.subtitle {
+    font-style: italic;
+    font-weight: bold;
+    margin-top: -0.3em;
+    margin-bottom: 0.3em;
+}
+
+/* The post date */
+.post .contentbar article p.date {
+    font-size: small;
+    color: #777;
+    margin-top: -0.3em;
+}
+
+@media (prefers-color-scheme: dark) {
+    .post .contentbar article p.date {
+        color: #888;
+    }
+}
+
+/* Inline code */
+code.highlighter-rouge {
+    color: #880;
+}
+
+@media (prefers-color-scheme: dark) {
+    code.highlighter-rouge {
+        color: #ff6;
+    }
+}
+
+/* Code blocks */
+pre.highlight {
+    overflow-x: auto;
+    padding: 10px 15px;
 }
 
 /* Images */
