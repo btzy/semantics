@@ -2,20 +2,22 @@
 <html>
 
 <head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140068142-1"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GT-5RMLX76H"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
-    gtag('config', 'UA-140068142-1');
+    gtag('config', 'GT-5RMLX76H');
   </script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog</title>
+  <title>{% if page.title %}{{ page.title }} &mdash; {% endif %}Semantics</title>
   <link rel="stylesheet" type="text/css" href="/style.css" />
+  <link rel="stylesheet" type="text/css" href="/assets/css/github.css" />
+  <link rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)" href="/assets/css/thankful_eyes.css" />
 </head>
 
 <body>
