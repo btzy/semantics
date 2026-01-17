@@ -1,7 +1,7 @@
 ---
 title: Flavours of Reflection
 subtitle: Comparing C++26 reflection with similar capabilities in other programming languages
-layout: article
+layout: post
 ---
 
 Reflection is imminent.  It is set to be part of C++26, and it is perhaps the most anticipated feature accepted into this version of the standard.  Lots of implementation work has already been done for [Clang](https://github.com/bloomberg/clang-p2996/tree/p2996) and [GCC](https://gcc.gnu.org/pipermail/gcc-patches/2025-November/700733.html) --- they pretty much already work (both are on Compiler Explorer), and it hopefully won't be too long before they get merged into their respective compilers.

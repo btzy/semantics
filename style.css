@@ -1,12 +1,27 @@
 @font-face {
     font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-Light.otf);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url(fonts/SourceSansPro-LightIt.otf);
+    font-style: italic;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Source Sans Pro";
     src: url(fonts/SourceSansPro-Regular.otf);
+    font-weight: 400;
 }
 
 @font-face {
     font-family: "Source Sans Pro";
     src: url(fonts/SourceSansPro-It.otf);
     font-style: italic;
+    font-weight: 400;
 }
 
 @font-face {
@@ -25,19 +40,25 @@
 @font-face {
     font-family: "Source Sans Pro";
     src: url(fonts/SourceSansPro-Bold.otf);
-    font-weight: bold;
+    font-weight: 700;
 }
 
 @font-face {
     font-family: "Source Sans Pro";
     src: url(fonts/SourceSansPro-BoldIt.otf);
     font-style: italic;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 /* Globals */
 body {
     font-family: "Source Sans Pro";
+    font-weight: 300;
+    letter-spacing: 0.4em;
+}
+
+pre {
+    letter-spacing: normal;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,6 +66,43 @@ body {
         background-color: #222;
         color: #DDD;
     }
+}
+
+/* The entire box, including the header */
+.post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* The content area including the sidebar but not the top bar */
+.post .contentbar {
+    width: 100%;
+    max-width: 1300px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+}
+
+/* The sidebar */
+.post .contentbar aside {
+    width: 25%;
+    flex: 0 0 auto;
+}
+
+/* The main content */
+.post .contentbar article {
+    width: 75%;
+    flex: 0 0 auto;
+    line-height: 1.6;
+    box-sizing: border-box;
+    padding: 0 30px;
+}
+
+/* Code blocks */
+pre.highlight {
+    overflow-x: scroll;
+    width: 100%;
 }
 
 /* Images */
