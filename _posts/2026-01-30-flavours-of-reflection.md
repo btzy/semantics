@@ -12,7 +12,7 @@ In the rest of this blog post, the knowledge of C++ fundamentals is assumed (but
 
 ## The example
 
-Let's use a simple example that one would probably come across in a reflection tutorial --- printing member field names and values of a struct instance:
+Let's use a simple example that one would probably come across in a reflection tutorial --- printing the member field names and values of a struct instance:
 
 ```cpp
 struct MyStruct {
@@ -87,13 +87,13 @@ And there we have it --- reflection in Python!
 
 A lot of why reflection is so simple in Python lies with the fact that both field names and field values are stored in the object itself and not the type --- the `MyStruct` Python class isn't aware of its member fields and doesn't actually do much. (The class type in Python is more important for member functions (methods), but that's a different thing.)  However, this isn't how it works in most of the common programming languages that care at least somewhat about efficiency (e.g. Java, C#, Rust, and C++).
 
-On the surface, we should immediately notice that storing field names in the object itself requires much more memory (unless optimised away somehow), and may reduce execution speed.  However, this is not the full reason --- to properly reap the benefits of static typing, structs are designed to be schemas that instances (objects) of the struct follow.  What this means is that in such languages, the struct definition tells us the field names and types (i.e. how the struct is laid out), and any instance created must follow that layout.  This allows the type checker to, for example, figure out that `obj.a` has type `int` if it already knows that `obj` has type `MyStruct`.
+On the surface, we should immediately notice that storing field names in the object itself requires much more memory (unless optimised away somehow), and may reduce execution speed.  However, this is not the full reason --- to properly reap the benefits of static typing, structs are designed to be schemas that instances (objects) of the struct adhere to.  What this means is that in such languages, the struct definition tells us the field names and types (i.e. how the struct is laid out), and any instance created must conform to that layout.  This allows the type checker to, for example, figure out that `obj.a` has type `int` if it already knows that `obj` has type `MyStruct`.
 
 (Note:  Python does have optional type hinting, but this is primarily for development tools and is not enforced by the interpreter.  However, even so, they had to define a syntax to describe the field names and types in the class itself, because this information is so crucial to making type checking work properly.)
 
-Furthermore, because the type of each variable is known at compile time (with some amount of polymorphism, if we want to be pedantic), there is generally no need to iterate fields, because the programmer (and the type checker) will already know the available fields.  I would argue that iterating fields, even if possible, in a statically typed programming language, is highly discouraged, because (at least in general) the type checker would lose the ability to figure out the type of each field yielded by the iterator.
+Furthermore, because the type of each variable is known at compile time (with some amount of polymorphism, if we want to be pedantic), there is generally no need to iterate fields, because the programmer (and the type checker) will already know the available fields.  I would argue that iterating fields, even if possible, in a statically typed programming language, should be highly discouraged, because (at least in general) the type checker would lose the ability to figure out the type of each field yielded by the iterator.
 
-Unless we really have a legitimate reason to iterate fields (like implementing the `object_to_string` function, where we want to implement something that would generally work with objects of any type).  Then, just maybe, we may decide to sacrifice some type checking for the ability to iterate them.
+Well, unless we really have a legitimate reason to iterate fields (like implementing the `object_to_string` function, where we want to implement something that would generally work with objects of any type).  Then, just maybe, we might decide to sacrifice some type checking for the ability to iterate them.
 
 The Java code looks like this:
 
@@ -171,7 +171,7 @@ The reflection magic that makes this possible consists of three complementary pa
 
 While parts 2 and 3 may not be necessary for certain use cases, all three parts are fundamental enough that any proper reflection library ought to have some form of each of these parts.
 
-Note:  There is a slight deficiency in the code --- `getDeclaredFields()` returns the member fields in an arbitrary order, which may not necessarily be the declaration order.  It isn't possible to determine the declaration order in Java.  Furthermore, since Java does not allow user code to perform layout-dependent operations (e.g. `reinterpret_cast`, `offsetof`), it's possible for a conforming Java compiler to reorder member fields, in which case the runtime environment cannot hope to know the order of member fields in the class definition at all.
+Note:  There is a slight deficiency in the code --- `getDeclaredFields()` returns the member fields in an arbitrary order, which may not necessarily be the declaration order.  It isn't possible to determine the declaration order in Java.  Furthermore, since Java does not allow user code to perform layout-dependent operations (such as the equivalent of `reinterpret_cast` or `offsetof`), it's possible for a conforming Java compiler to reorder member fields, in which case the runtime environment cannot hope to know the order of member fields in the original source code at all.
 
 ### Java nitpicks
 
@@ -268,7 +268,7 @@ static string object_to_string<T>(T obj) {
 
 ### C# nitpicks
 
-We can also similarly simplify the C# code using LINQ and removing the generic type parameter:
+Similar to Java, we can simplify the C# code using LINQ and removing the generic type parameter:
 
 ```csharp
 static string object_to_string(Object obj) {
@@ -324,7 +324,7 @@ static string object_to_string_MyStruct(MyStruct obj) {
 }
 ```
 
-However, if we were to profile the two versions, we would find that the generic version is much slower.  This is because, among other things, the generic function had to query the type definition and iterate its fields, while the specialised version did not.  (On [Compiler Explorer](https://csharp.godbolt.org/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAMzwBtMA7AQwFtMQByARg9KtQYEAysib0QXACx8BBAKoBnTAAUAHpwAMvAFYTStJg1DIFCJsQAOpJfWQE8Ayo3QBhVLQCuLBnucAZPAZMADkvACNMYhAAZgAOUgtUBUIHBjdPbz1E5PsBAKDQlgiouOtMW1yGIQJzAnSvHy4yitTq2vyQ8MiY%2BIUa4jr3Br0%2B9sDOou64gEprVA9iZHYOD2SjAGohAE8%2BzBYAUmiAIX2NAEFVwOBNnYI9gDp0loEFe4BxRki8ZEOT88uNttdix7gARPBMYAMJL2Ey/U4XNbXIF3EEAJUwVGeDHh5wRFg8YVo33WfWIHjs6wAsltquTKfsAOx/M7rNnrAlEkmBAjrJi41nsznE5CkgjEK7rMIC9kcwki9boeZEzDrH7HBEI2XCkk0ukUggQHl80hiiUbMKmpXy1XIabrJks2WyggIPCvJgO6Kgvky51s13u%2B5hL0%2B6Ua87%2BgNu16iw4%2B9VO9lM0GaxmpvHnHWi5AGBQKdbKYioYDEVgO5la9mjWFmyWoMLaTB2AD6RBbZKuhxcABVDtgID31g3tPbHVX/QB6SfrD6812qskGxWYwIpATDqjrBfrYB4ABujGHjebBAnzp7Wwsi/FBpbWC38eP2nemAIl%2BvEGmfv959l0/WVlUUSMtiC2NVZCYcZiHWfgYJ3TsjDwGhMHQWC8HKNDmDYAtDDQ/cxA8TAFD/dkAj6btEOAfs6yMAsnyCAB3L8f2dUi2QAgBJO4yzuPlaFodZAlGBglnQzCCyNe5MHudZoQYABaGsSRQ2h0AUb9IyjODMCYZAEHWCAADEMLUziGH4cS1PvTEhIYM07wfV8CBMiSICOQJ8CMIyDGAV5lHlEkmRcdYPIYLzgB8yFXmCAQAq5ONGRCsKIqivz7nMkSlmmMdKy0qNq3FK5XjOdB0GoUz0Bsqh7mCVhVX2AAmI4HUaxqQFaxrWpa1SqqcucADVCMwCAR2me4e1QOkri/b8I0FX903Yh18udACMQIBZ7J3OCWCYAg7jQqjluIN8ts68c2u6zYiqMe4AClUECCAmsa01XtNKiNOu16U1%2B%2BbZT%2BzMFrFfaSSo59TzbVAO1u4AWz1W87AgRH6V5MaKyTf1Ts24h7N%2B5kmA617rpHe4mAmqa4a/H62tNMJiaupqWrJsJKemowaeZzrTWQRmuu5snkHZ6mx2ai6lra1igbOc9s1B2t9yetCqSghgIGOgBWE5NZ9cw/NyrHnVR5cR1DOTMEY6laSRw1JDezqAAlyloVAPvWaJ7ikOajf/GcexjUkEHmNSOXNXkFFQNhAw2YkAGtMGWgDHSJ9Z7fpjrnYE1BeY6z2pBlgq4MM408HNjRfiEr0Qs1yvmeZvBDeWwG8pBgrZWqVALEY/b9LFLue4IPun077ve4Qe42gGYJLZYgH2/9CHToUDxaF5J8Ryh9sqNGxsfebqM%2BgH8fJ6ICw599hf1jcBhI/oe4AHUJTuDoXra4BPglUVOuuo%2Bx6Hie2ADAWCUOgSmNRaB1WhEoNA4V6LixJog8Wy9V4EH3qtAqhcr7jgwVfUeg8%2B5/wIQZEeZ9iGn1qDPZi6C25XyXsRVB5tN6tm3nDBGNs0a71HKxK%2B/d/76VPl3C%2BB9/Q3zvjJJ%2BhBMCv1egoa8yBkJBSZuLIhJ8gFMBAahcBYgoFJGbAIdStMBbKJaigteNDeFYMWhmEGMsUwcFmLQTgmteA%2BA4FoUgqBOAuCatEUk8xFgNUatEHgpACCaAcbMOOIBJAAE57ixMSUk5JyT9CcEkK4iJnjOC8AUCADQYSImzDgLAJAmBVDNg8EQMgFAID6wUMoQw5QhDB0Ym40JaAWAWDoGDOKTTaAtNQG0rJnTun0CiEqAgQQCCxI0CYMwlg0CnVzGQUZdBIh1TYDk0gazxkAHkqmDOGe43g5TmxnGIH5bZZzkDVC8ts/gggRBiHYFIGQghFAqHUCc0gugmgGCMCgUw5grDEjCHkyAswu6VDyRwBSCkEDlAsLwVAh5iASiwBCr8pBySCDwGwSa7gsWzEjgsJYIwCBeUaUEAZrT2m8EYmWCwnAeCOOcZkn5XiODYAqcgKpJB1i1WwEOeJGhr4kEwC4PwaJDI%2BOCaaXAhABW%2BK4NMXg4STk5VINEuJCSUn6sSWkjgGTSBuI8Vy3J%2BTCmarZRwRqHLzXbI1VoLVaLkiOEkEAA) it took 2100 ns for the generic version and 1100 ns for the specialised version.)  However, there is nothing about the given task that actually requires us to do the extra work at runtime --- we already know the type of `T` (and therefore all its member fields) at compile time, and so a sufficiently smart compiler (AOT in C++, or JIT in C#) should be theoretically capable of emitting code that is identical to the specialised version.  This is exactly what C++'s new reflection feature bakes into the language --- reflection is performed fully at compile time, and so the compiled code will be effectively identical to the specialised version, making the generic function a zero-cost abstraction!
+However, if we were to profile the two versions, we would find that the generic version is much slower.  This is because, among other things, the generic function had to query the type definition and iterate its fields, while the specialised version did not.  (On [Compiler Explorer](https://csharp.godbolt.org/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAMzwBtMA7AQwFtMQByARg9KtQYEAysib0QXACx8BBAKoBnTAAUAHpwAMvAFYTStJg1DIFCJsQAOpJfWQE8Ayo3QBhVLQCuLBnucAZPAZMADkvACNMYhAAZgAOUgtUBUIHBjdPbz1E5PsBAKDQlgiouOtMW1yGIQJzAnSvHy4yitTq2vyQ8MiY%2BIUa4jr3Br0%2B9sDOou64gEprVA9iZHYOD2SjAGohAE8%2BzBYAUmiAIX2NAEFVwOBNnYI9gDp0loEFe4BxRki8ZEOT88uNttdix7gARPBMYAMJL2Ey/U4XNbXIF3EEAJUwVGeDHh5wRFg8YVo33WfWIHjs6wAsltquTKfsAOx/M7rNnrAlEkmBAjrJi41nsznE5CkgjEK7rMIC9kcwki9boeZEzDrH7HBEI2XCkk0ukUggQHl80hiiUbMKmpXy1XIabrJks2WyggIPCvJgO6Kgvky51s13u%2B5hL0%2B6Ua87%2BgNu16iw4%2B9VO9lM0GaxmpvHnHWi5AGBQKdbKYioYDEVgO5la9mjWFmyWoMLaTB2AD6RBbZKuhxcABVDtgID31g3tPbHVX/QB6SfrD6812qskGxWYwIpATDqjrBfrYB4ABujGHjebBAnzp7Wwsi/FBpbWC38eP2nemAIl%2BvEGmfv959l0/WVlUUSMtiC2NVZCYcZiHWfgYJ3TsjDwGhMHQWC8HKNDmDYAtDDQ/cxA8TAFD/dkAj6btEOAfs6yMAsnyCAB3L8f2dUi2QAgBJO4yzuPlaFodZAlGBglnQzCCyNe5MHudZoQYABaGsSRQ2h0AUb9IyjODMCYZAEHWCAADEMLUziGH4cS1PvTEhIYM07wfV8CBMiSICOQJ8CMIyDGAV5lHlEkmRcdYPIYLzgB8yFXmCAQAq5ONGRCsKIqivz7nMkSlmmMdKy0qNq3FK5XjOdB0GoUz0Bsqh7mCVhVX2AAmI4HUaxqQFaxrWpa1SqqcucADVCMwCAR2me4e1QOkri/b8I0FX903Yh18udACMQIBZ7J3OCWCYAg7jQqjluIN8ts68c2u6zYiqMe4AClUECCAmsa01XtNKiNOu16U1%2B%2BbZT%2BzMFrFfaSSo59TzbVAO1u4AWz1W87AgRH6V5MaKyTf1Ts24h7N%2B5kmA617rpHe4mAmqa4a/H62tNMJiaupqWrJsJKemowaeZzrTWQRmuu5snkHZ6mx2ai6lra1igbOc9s1B2t9yetCqSghgIGOgBWE5NZ9cw/NyrHnVR5cR1DOTMEY6laSRw1JDezqAAlyloVAPvWaJ7ikOajf/GcexjUkEHmNSOXNXkFFQNhAw2YkAGtMGWgDHSJ9Z7fpjrnYE1BeY6z2pBlgq4MM408HNjRfiEr0Qs1yvmeZvBDeWwG8pBgrZWqVALEY/b9LFLue4IPun077ve4Qe42gGYJLZYgH2/9CHToUDxaF5J8Ryh9sqNGxsfebqM%2BgH8fJ6ICw599hf1jcBhI/oe4AHUJTuDoXra4BPglUVOuuo%2Bx6Hie2ADAWCUOgSmNRaB1WhEoNA4V6LixJog8Wy9V4EH3qtAqhcr7jgwVfUeg8%2B5/wIQZEeZ9iGn1qDPZi6C25XyXsRVB5tN6tm3nDBGNs0a71HKxK%2B/d/76VPl3C%2BB9/Q3zvjJJ%2BhBMCv1egoa8yBkJBSZuLIhJ8gFMBAahcBYgoFJGbAIdStMBbKJaigteNDeFYMWhmEGMsUwcFmLQTgmteA%2BA4FoUgqBOAuCatEUk8xFgNUatEHgpACCaAcbMOOIBJAAE57ixMSUk5JyT9CcEkK4iJnjOC8AUCADQYSImzDgLAJAmBVDNg8EQMgFAID6wUMoQw5QhDB0Ym40JaAWAWDoGDOKTTaAtNQG0rJnTun0CiEqAgQQCCxI0CYMwlg0CnVzGQUZdBIh1TYDk0gazxkAHkqmDOGe43g5TmxnGIH5bZZzkDVC8ts/gggRBiHYFIGQghFAqHUCc0gugmgGCMCgUw5grDEjCHkyAswu6VDyRwBSCkEDlAsLwVAh5iASiwBCr8pBySCDwGwSa7gsWzEjgsJYIwCBeUaUEAZrT2m8EYmWCwnAeCOOcZkn5XiODYAqcgKpJB1i1WwEOeJGhr4kEwC4PwaJDI%2BOCaaXAhABW%2BK4NMXg4STk5VINEuJCSUn6sSWkjgGTSBuI8Vy3J%2BTCmarZRwRqHLzXbI1VoLVaLkiOEkEAA), it took 2100 ns for the generic version and 1100 ns for the specialised version.)  However, there is nothing about the given task that actually requires us to do the extra work at runtime --- we already know the type of `T` (and therefore all its member fields) at compile time, and so a sufficiently smart compiler (AOT in C++, or JIT in C#) should be theoretically capable of emitting code that is identical to the specialised version.  This is exactly what C++'s new reflection feature bakes into the language --- reflection is performed fully at compile time, and so the compiled code will be effectively identical to the specialised version, making the generic function a zero-cost abstraction!
 
 Leveraging on existing compile time computation support (i.e. `constexpr` and friends), reflection in C++ --- all the three "complementary parts" described above --- is performed at compilation time.  This is not because of a smart optimiser, but because it is specified to require it (much like how a non-type template parameter needs to be instantiated with a template argument that is a constant expression).
 
@@ -336,15 +336,18 @@ std::string object_to_string(const T& obj) {
     // Get the reflection (struct definition) of T
     constexpr std::meta::info struct_def = ^^T;
 
+    // Get the non-static fields at compile time
+    // - nonstatic_data_members_of(struct_def, unchecked()) is a consteval function that returns a std::vector<std::meta::info> containing the non-member fields (regardless of access modifier)
+    // - define_static_array() is a consteval function converts a constexpr std::vector to a constexpr array of the correct size
+    constexpr auto data_members = std::define_static_array(std::meta::nonstatic_data_members_of(struct_def, std::meta::access_context::unchecked()));
+
     // A temporary container for the stringified field names and values
     std::vector<std::string> strings;
 
     // Iterate all non-static fields at compile time
-    // - nonstatic_data_members_of(struct_def, unchecked()) is a consteval function that returns a std::vector<std::meta::info> containing the non-member fields (regardless of access modifier)
-    // - define_static_array() is a consteval function converts a constexpr std::vector to a constexpr array of the correct size
     // - "template for" iterates the constexpr array but keeps the loop variable constexpr (i.e. like std::apply)
     // - stringify() is a custom helper function written to convert any object to a string or string_view, because C++ does not standardise such a facility
-    template for (constexpr std::meta::info field_def : std::define_static_array(std::meta::nonstatic_data_members_of(struct_def, std::meta::access_context::unchecked()))) {
+    template for (constexpr std::meta::info field_def : data_members) {
         strings.push_back(""s + std::meta::identifier_of(field_def) + ": " + stringify(obj.[:field_def:]));
     }
 
@@ -495,7 +498,7 @@ fn object_to_string<T: Serialize>(obj: &T) -> String {
 }
 ```
 
-The magic happens in the `derive` macro.  The `#[derive(Serialize)]` syntax on the struct definition invokes what is known as a *procedural macro* in Rust (specifically a *derive procedural macro*).  It essentially consumes the struct definition it is applied to and emits extra code for it.  The struct definition itself cannot be modified, but it may inspect the struct definition and produce arbitrary code (implemented in the procedural macro).  The `Serialize` procedural macro emits functions that describe the fields of the struct.  These functions make up the implementation of the `serde::Serialize` trait, and they are used by `serde_json::to_string` to produce a string representation of the field names and values of the struct.  The code injection occurs fully at compilation time, making this seem like compile time reflection.
+The magic happens in the `derive` macro.  The `#[derive(Serialize)]` syntax on the struct definition invokes what is known as a *procedural macro* in Rust (specifically a *derive procedural macro*).  It essentially processes the struct definition it is applied to and emits extra code for it.  The struct definition itself cannot be modified by a derive procedural macro, but it may inspect the struct definition and produce arbitrary code (implemented in the procedural macro).  The `Serialize` procedural macro emits functions that describe the fields of the struct.  These functions make up the implementation of the `serde::Serialize` trait, and they are used by `serde_json::to_string` to produce a string representation of the field names and values of the struct.  The code injection occurs fully at compilation time, making this seem like compile time reflection.
 
 We won't look at exactly how to implement the `Serialize` procedural macro, but at a high level, one would write a function that consumes a token stream (of program tokens after lexing) and produces another token stream:
 
@@ -528,7 +531,7 @@ struct MyStructV2 {
 
 How would the procedural macro know how to serialise `MoreStuff`?  It can't, because all it sees is a token containing the identifier `MoreStuff`, but it has no way to look into the definition of `MoreStuff` to obtain its member fields.  (Unless... we also put `#[derive(Serialize)]` on the definition of `MoreStuff`, so that Serde also generates serialisation code for it.)  Rust does not have the ability to do a "jump to definition".
 
-When we that Rust does not have reflection, we mean that there is no way to make queries about the program, apart from what can be deduced from the code in the procedural macro itself.  Apart from being unable to jump to the definition of a type, we are also unable to figure out the size of each field in the struct, or if the struct has any methods (since methods in Rust are never written "inline" in the struct definition).
+When we say that Rust does not have reflection, we mean that there is no way to make queries about the program, apart from what can be deduced from the code in the procedural macro itself.  In addition to being unable to jump to the definition of a type, we are also unable to figure out the size of each field in the struct, or if the struct has any methods (since methods in Rust are never written "inline" in the struct definition).
 
 ### Rust and metaclasses
 
@@ -541,7 +544,7 @@ struct(metafunc) MyStruct {
 };
 ```
 
-The "modifier" is a compile-time function that takes in the reflection of the given struct definition (in this case `MyStruct`) as a `std::meta::info`, and returns code that will be injected in place of the "modifed" struct definition --- essentially a transformation of a struct definition into a bunch of tokens.
+The "modifier" is a compile-time function that takes in the reflection of the given struct definition (in this case `MyStruct`) as a `std::meta::info`, and returns code that will be injected in place of the "modifed" struct definition --- essentially a transformation of a struct definition into a bunch of new tokens.
 
 This is almost like what Rust can do with *attribute procedural macros*, which, unlike derive procedural macros, allow the entire struct definition to be modified.  In other words, an attribute procedural macro consumes the token stream making up the struct definition, and replaces it with an arbitrary token stream.
 
