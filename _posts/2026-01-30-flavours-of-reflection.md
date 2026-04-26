@@ -337,8 +337,8 @@ std::string object_to_string(const T& obj) {
     constexpr std::meta::info struct_def = ^^T;
 
     // Get the non-static fields at compile time
-    // - nonstatic_data_members_of(struct_def, unchecked()) is a consteval function that returns a std::vector<std::meta::info> containing the non-member fields (regardless of access modifier)
-    // - define_static_array() is a consteval function converts a constexpr std::vector to a constexpr array of the correct size
+    // - nonstatic_data_members_of(struct_def, unchecked()) is a consteval function that returns a std::vector<std::meta::info> containing the non-static member fields (regardless of access modifier)
+    // - define_static_array() is a consteval function that converts a constexpr std::vector to a constexpr array of the correct size
     constexpr auto data_members = std::define_static_array(std::meta::nonstatic_data_members_of(struct_def, std::meta::access_context::unchecked()));
 
     // A temporary container for the stringified field names and values
