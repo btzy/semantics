@@ -382,9 +382,13 @@ All the reflection code evaporates away after constant evaluation, and therefore
 
 Notice that this "constexpr reflection", as designed for C++, only works because C++ has expressive constant evaluation (via `constexpr` and `consteval`) baked into the language --- it is possible to perform arbitrary computations at compile time, or ensure that a variable must contain a value known at compile time (i.e. a `constexpr` variable).  `std::meta::info` is also specified to be a *consteval-only* type, which means that it is only allowed to exist in compile time code; as a result of this, all the functions that operate on `std::meta::info` (e.g. `std::meta::nonstatic_data_members_of` and `std::meta::identifier_of`) are `consteval` functions.
 
-### Reflection without a runtime environment
+### Runtime reflection
 
-C++ does not have a runtime environment like Java and C# does, if C++ were to support runtime reflection, it would need to embed reflection information in the binary itself.  Storing all class definitions in the binary would be inefficient, because most programs that use reflection are likely to only reflect on a few specific types or type hierarchies.  Furthermore, C++ programs generally have more functions and structs than equivalent Java and C# programs, thus increasing the amount of extra metadata required.  These reasons make theoretical runtime reflection support in C++ somewhat problematic, meaning that there perhaps weren't really any good alternatives to compile time reflection in C++.
+> Note: An earlier version of this blog post said that implementing runtime reflection in C++ is problematic.  I have since been convinced that runtime reflection can in fact be implemented over compile time reflection.
+
+C++ does not have a runtime environment like Java and C# does; if C++ were to support runtime reflection, it would need to embed reflection information in the binary itself.  This would make the compiled binary larger, as it will need to store class definitions, as well as the definitions of inline functions that would otherwise be compiled away.  (Languages with a runtime environment already have to have this information available at runtime, so the support of runtime reflection doesn't incur any additional overhead.)
+
+However, runtime reflection can be performed, if desired.  We would use compile time reflection to produce metadata about the types we want to reflect, store those metadata somewhere in the binary (perhaps as a `constexpr` global variable), and access them at runtime.  C++ thus gives us strictly more flexibility than languages that support only runtime reflection.
 
 ### C++ nitpicks
 
